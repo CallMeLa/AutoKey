@@ -1,0 +1,76 @@
+import subprocess
+subprocess.call([ "xdotool", "mousemove", "960", "540"])
+choices = ["Teleport","Commands","Maps","Weapons", "Scoreboard","Server","Suicide","Disconnect","Reconnect","Exit"]
+teleportLocations = ["spawn", "armour", "weapons"]
+commands = ["ban", "kick", "mute", "cancelvotekick", "slomo 0", "slomo 1", "restartlevel", "toggleHUD"]
+weapons = ["givecata","parrythis"]
+server = ["Mods", "Logs"]
+maps = ["akkadiancamp", "akkadiangrad", "siegeofnoria"]
+retCode, choice = dialog.list_menu(choices, title="Admin Menu", height="350", width="300")
+if choice == "Scoreboard":
+    time.sleep(0.5)
+    keyboard.send_keys("<escape>")
+    time.sleep(0.1)
+    subprocess.call([ "xdotool", "mousemove", "372", "45"])
+    time.sleep(0.1)
+    mouse.click_relative_self(0, 0, 1)
+    subprocess.call([ "xdotool", "mousemove", "1026", "113"])
+    time.sleep(0.1)
+    mouse.click_relative_self(0, 0, 1)
+if choice == "Server":
+    retCode, serverChoice = dialog.list_menu(server, title="Server", height="350", width="300")
+    if serverChoice != "":
+        if serverChoice == "Mods":
+            system.exec_command("firefox https://mordhau.mod.io/?sort=dateupdated-desc", getOutput=True)
+        if choice == "Logs":
+            system.exec_command("firefox https://google.com", getOutput=True)
+if choice == "Maps":
+    retCode, mapChoice = dialog.list_menu(maps, title="Maps", height="350", width="300")
+    if mapChoice != "":
+        if mapChoice == "akkadiancamp" or mapChoice == "akkadiangrad" or mapChoice == "siegeofnoria":
+            time.sleep(0.5)
+            keyboard.send_keys("`changelevel hrd_"+mapChoice+"<enter>")
+if choice == "Weapons":
+    retCode, weaponChoice = dialog.list_menu(weapons, title="Weapons", height="350", width="300")
+    if weaponChoice != "":
+        if weaponChoice == "parrythis" or weaponChoice == "givecata":
+            time.sleep(0.5)
+            keyboard.send_keys("`"+weaponChoice+"<enter>")
+if choice == "Commands":
+    retCode, commandChoice = dialog.list_menu(commands, title="Commands", height="350", width="300")
+    if commandChoice != "":
+        if commandChoice == "ban" or commandChoice == "kick" or commandChoice == "mute":
+            time.sleep(0.5)
+            keyboard.send_keys("`playerlist<enter>``"+commandChoice)
+        elif commandChoice == "cancelvotekick" or commandChoice == "slomo 0" or commandChoice == "slomo 1" or commandChoice == "restartlevel":
+            time.sleep(0.5)
+            keyboard.send_keys("`"+commandChoice+"<enter>")
+        elif commandChoice == "toggleHUD":
+            if store.get_value("HudValue") == "True":
+                time.sleep(0.5)
+                keyboard.send_keys("`")
+                keyboard.send_keys("m.hidehud 0<enter>")
+                store.set_value("HudValue", "False")
+            else:
+                time.sleep(0.5)
+                keyboard.send_keys("`")
+                keyboard.send_keys("m.hidehud 1<enter>")
+                store.set_value("HudValue", "True")
+if choice == "Teleport":
+    retCode, tpChoice = dialog.list_menu(teleportLocations, title="Teleport Menu", height="350", width="300")
+    if tpChoice != "":
+        time.sleep(0.5)
+        keyboard.send_keys("y!teleport "+tpChoice)
+        keyboard.send_keys("<enter>")
+if choice == "Exit":
+    time.sleep(0.5)
+    keyboard.send_keys("`exit<enter>")
+if choice == "Reconnect":
+    time.sleep(0.5)
+    keyboard.send_keys("`Reconnect<enter>")
+if choice == "Disconnect":
+    time.sleep(0.5)
+    keyboard.send_keys("`Disconnect<enter>")
+if choice == "Suicide":
+    time.sleep(0.5)
+    keyboard.send_keys("<end>")
